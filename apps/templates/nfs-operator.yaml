@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: in-cluster
+    namespace: nfs
+  source:
+    #path: ''
+    repoURL: 'https://kubernetes-charts.storage.googleapis.com'
+    targetRevision: 0.4.0
+    chart: mysql-operator
+    helm:
+      parameters:
+      - name: persistence.enabled
+        value: 'true'
+      - name: persistence.size
+        value: '5Gi'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
