@@ -1,6 +1,4 @@
 spec:
-  destination:
-    server: https://kubernetes.default.svc
-  source:
-    repoURL: https://github.com/argoproj/argocd-example-apps
-    targetRevision: HEAD
+  nfs:
+    # Specify size for NFS server max
+    size: 6Gi
