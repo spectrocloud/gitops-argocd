@@ -53,14 +53,14 @@ spec:
         - sh
         - -c
         - >
-          set -x
-          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
+          set -x;
+          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local;
           do
-            echo waiting for my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
-            sleep 5
-          done
-          echo "db is found!"
-          sleep 10
+            echo waiting for my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local;
+            sleep 5;
+          done;
+          echo "db is found!";
+          sleep 10;
       volumes:
       - name: shared-home
         persistentVolumeClaim:
