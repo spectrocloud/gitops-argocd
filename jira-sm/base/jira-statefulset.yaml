@@ -46,10 +46,10 @@ spec:
         image: busybox:1.28
         # TODO do this better
         command: ['sh', '-c', "echo waiting for db && sleep 60"]
-    volumes:
-    - name: shared-home
-      persistentVolumeClaim:
-        claimName: jira-shared-pvc
+      volumes:
+      - name: shared-home
+        persistentVolumeClaim:
+          claimName: jira-shared-pvc
   volumeClaimTemplates:
   - metadata:
       name: local-home
