@@ -46,7 +46,21 @@ spec:
         image: busybox:1.28
         # TODO NOTES
         command: ['sh', '-c', "echo waiting for db && sleep 60"]
-        #['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+        - sh
+        - -c
+        - >
+          set -x
+          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local; do
+            echo waiting for my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
+            sleep 5
+          done
+          echo "db is found!"
+          sleep 10
+      env:
+      - name: DB_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
       volumes:
       - name: shared-home
         persistentVolumeClaim:
