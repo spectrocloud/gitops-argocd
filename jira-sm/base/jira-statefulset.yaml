@@ -42,17 +42,6 @@ spec:
         - name: shared-home
           mountPath: /var/atlassian/application-data/jira/shared
       initContainers:
-      - name: install-nfs
-        image: busybox:1.28
-        command:
-        - nsenter
-        - --mount=/proc/1/ns/mnt
-        - --
-        - sh
-        - -c
-        - "apt update && apt install -qy nfs-common"
-        securityContext:
-          privileged: true
       - name: init-myservice
         image: busybox:1.28
         # TODO NOTES
