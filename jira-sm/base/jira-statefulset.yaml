@@ -41,6 +41,14 @@ spec:
           mountPath: /var/atlassian/application-data/jira
         - name: shared-home
           mountPath: /var/atlassian/application-data/jira/shared
+        lifecycle:
+          postStart:
+            exec:
+              command: ["chown", "jira:jira", "/var/atlassian/application-data/jira/shared"]
+      volumes:
+      - name: shared-home
+        persistentVolumeClaim:
+          claimName: jira-shared-pvc
       initContainers:
       - name: init-myservice
         image: busybox:1.28
@@ -54,17 +62,12 @@ spec:
         - -c
         - |
           set -x
-          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
-          do
+          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local; do
             echo waiting for my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
             sleep 5
           done
           echo "db is found!"
-          sleep 11
-      volumes:
-      - name: shared-home
-        persistentVolumeClaim:
-          claimName: jira-shared-pvc
+          sleep 8
   volumeClaimTemplates:
   - metadata:
       name: local-home
