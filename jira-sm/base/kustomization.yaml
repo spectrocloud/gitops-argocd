@@ -7,12 +7,13 @@ resources:
 - jira-ingress.yaml
 - jira-service.yaml
 - jira-statefulset.yaml
+- jira-shared-pvc.yaml
 
 vars:
 - name: INGRESS_HOST
   objref:
+    apiVersion: v1
     kind: ConfigMap
     name: jira-config
-    apiVersion: v1
   fieldref:
     fieldpath: data.ATL_PROXY_NAME
