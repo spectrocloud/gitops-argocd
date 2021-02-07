@@ -54,7 +54,8 @@ spec:
         - -c
         - >
           set -x
-          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local; do
+          until nslookup my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
+          do
             echo waiting for my-cluster-mysql-0.mysql.$(DB_NAMESPACE).svc.cluster.local
             sleep 5
           done
