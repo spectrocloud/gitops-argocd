@@ -44,7 +44,11 @@ spec:
       initContainers:
       - name: init-myservice
         image: busybox:1.28
-        # TODO NOTES
+        env:
+        - name: DB_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         command:
         - sh
         - -c
@@ -56,11 +60,6 @@ spec:
           done
           echo "db is found!"
           sleep 10
-      env:
-      - name: DB_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
       volumes:
       - name: shared-home
         persistentVolumeClaim:
