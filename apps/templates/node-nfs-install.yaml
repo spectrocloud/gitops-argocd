@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         k8s-app: node-custom-setup
+        spectrocloud.com/connection: proxy
     spec:
       hostNetwork: true
       hostPID: true
