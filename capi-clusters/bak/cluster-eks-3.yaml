@@ -1,0 +1,102 @@
+apiVersion: cluster.x-k8s.io/v1alpha4
+kind: Cluster
+metadata:
+  name: eks-3
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+    kind: AWSManagedControlPlane
+    name: eks-3-control-plane
+  infrastructureRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+    kind: AWSManagedControlPlane
+    name: eks-3-control-plane
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+kind: AWSManagedControlPlane
+metadata:
+  name: eks-3-control-plane
+  namespace: default
+spec:
+  network:
+    subnets:
+    - availabilityZone: us-east-1b
+      cidrBlock: 10.0.5.0/24
+      id: subnet-025428faaddc4201f
+      isPublic: true
+      routeTableId: rtb-035ce3da4a9136c17
+      tags:
+        Name: static-vpc-public-us-east-1b
+        kubernetes.io/cluster/eks-dev-1: shared
+        kubernetes.io/cluster/eks-dev-2: shared
+        kubernetes.io/cluster/eks-dev-3: shared
+        kubernetes.io/cluster/eks-dev-4: shared
+        kubernetes.io/cluster/eks-picard-static-2: shared
+        kubernetes.io/cluster/eks-prod-2: shared
+        kubernetes.io/cluster/tool-dev-1: shared
+        kubernetes.io/role/elb: "1"
+    - availabilityZone: us-east-1a
+      cidrBlock: 10.0.4.0/24
+      id: subnet-080b9dc42d15b57a2
+      isPublic: true
+      natGatewayId: nat-06a6c3090ea6a9e8a
+      routeTableId: rtb-035ce3da4a9136c17
+      tags:
+        Name: static-vpc-public-us-east-1a
+        kubernetes.io/cluster/eks-dev-1: shared
+        kubernetes.io/cluster/eks-dev-2: shared
+        kubernetes.io/cluster/eks-dev-3: shared
+        kubernetes.io/cluster/eks-dev-4: shared
+        kubernetes.io/cluster/eks-picard-static-2: shared
+        kubernetes.io/cluster/eks-prod-2: shared
+        kubernetes.io/cluster/tool-dev-1: shared
+        kubernetes.io/role/elb: "1"
+    vpc:
+      availabilityZoneSelection: Ordered
+      availabilityZoneUsageLimit: 3
+      cidrBlock: 10.0.0.0/16
+      id: vpc-0c9679602584608f9
+      tags:
+        Name: static-vpc
+  region: us-east-1
+  sshKeyName: default
+  version: v1.21
+---
+apiVersion: cluster.x-k8s.io/v1alpha4
+kind: MachinePool
+metadata:
+  name: eks-3-pool-0
+  namespace: default
+spec:
+  clusterName: eks-3
+  replicas: 3
+  template:
+    spec:
+      bootstrap:
+        dataSecretName: ""
+      clusterName: eks-3
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+        kind: AWSManagedMachinePool
+        name: eks-3-pool-0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+kind: AWSManagedMachinePool
+metadata:
+  name: eks-3-pool-0
+  namespace: default
+spec:
+  availabilityZones:
+  - us-east-1a
+  - us-east-1b
+  subnetIDs:
+  - subnet-07f0af093b8233990
+  - subnet-0e0d96dc7ad3f02a5
+  scaling:
+    minSize: 1
+    maxSize: 5

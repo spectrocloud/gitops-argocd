@@ -2,14 +2,14 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
 kind: MaasCluster
 metadata:
-  name: my-cluster-2
+  name: maas-2
 spec:
   dnsDomain: maas.sc
 ---
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: Cluster
 metadata:
-  name: my-cluster-2
+  name: maas-2
 spec:
   clusterNetwork:
     services:
@@ -20,18 +20,18 @@ spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
     kind: KubeadmControlPlane
-    name: my-cluster-2-cp
+    name: maas-2-cp
     namespace: default
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
     kind: MaasCluster
-    name: my-cluster-2
+    name: maas-2
     namespace: default
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
 kind: MaasMachineTemplate
 metadata:
-  name: my-cluster-2-cp
+  name: maas-2-cp
   namespace: default
 spec:
   template:
@@ -44,7 +44,7 @@ spec:
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
 kind: KubeadmControlPlane
 metadata:
-  name: my-cluster-2-cp
+  name: maas-2-cp
   namespace: default
 spec:
   replicas: 1
@@ -53,7 +53,7 @@ spec:
     infrastructureRef:
       apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
       kind: MaasMachineTemplate
-      name: my-cluster-2-cp
+      name: maas-2-cp
       namespace: default
   kubeadmConfigSpec:
     clusterConfiguration: {}
@@ -64,7 +64,7 @@ status:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
 kind: MaasMachineTemplate
 metadata:
-  name: my-cluster-2-worker
+  name: maas-2-worker
   namespace: default
 spec:
   template:
@@ -77,32 +77,32 @@ spec:
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: MachineDeployment
 metadata:
-  name: my-cluster-2-worker
+  name: maas-2-worker
   namespace: default
 spec:
-  clusterName: my-cluster-2
+  clusterName: maas-2
   replicas: 1
   selector:
     matchLabels:
-      cluster.x-k8s.io/cluster-name: my-cluster-2
+      cluster.x-k8s.io/cluster-name: maas-2
   template:
     spec:
-      clusterName: my-cluster-2
+      clusterName: maas-2
       version: 1.19.12
       bootstrap:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha4
           kind: KubeadmConfigTemplate
-          name: my-cluster-2-worker
+          name: maas-2-worker
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
         kind: MaasMachineTemplate
-        name: my-cluster-2-worker
+        name: maas-2-worker
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha4
 kind: KubeadmConfigTemplate
 metadata:
-  name: my-cluster-2-worker
+  name: maas-2-worker
   namespace: default
 spec:
   template:
